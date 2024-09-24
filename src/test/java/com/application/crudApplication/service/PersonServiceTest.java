@@ -72,7 +72,7 @@ public class PersonServiceTest {
 
         Person updatedDetails = new Employee();
         updatedDetails.setName("Jane Doe");
-
+        when(personRepository.save(any(Person.class))).thenReturn(updatedDetails);
         Person updatedPerson = personService.updatePerson(1L, updatedDetails);
 
         assertEquals("Jane Doe", updatedPerson.getName());

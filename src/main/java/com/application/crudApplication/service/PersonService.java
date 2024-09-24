@@ -4,9 +4,10 @@ import com.application.crudApplication.entity.Person;
 import com.application.crudApplication.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class PersonService {
     @Autowired
     private PersonRepository personRepository;
@@ -33,6 +34,8 @@ public class PersonService {
     }
 
     public void deletePerson(Long id) {
+       personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
         personRepository.deleteById(id);
         kafkaTemplate.send("person_topic", "Deleted person with ID: " + id);
     }
